@@ -3,9 +3,13 @@ import { } from 'koishi-plugin-adapter-iirose'
 
 export const name = 'iirose-follow'
 
-export interface Config { }
+export interface Config {
+  permission: string[]
+ }
 
-export const Config: Schema<Config> = Schema.object({})
+export const Config: Schema<Config> = Schema.object({
+  permission: Schema.array(String).description('允许使用者唯一标识列表').default([])
+})
 
 const logger = new Logger('IIROSE-Follow')
 
@@ -20,7 +24,7 @@ export interface follow {
   status: boolean
 }
 
-export function apply(ctx: Context) {
+export function apply(ctx: Context, config: Config) {
   ctx.model.extend('iirose_follow', {
     uid: 'string',
     status: 'boolean'
@@ -28,7 +32,10 @@ export function apply(ctx: Context) {
     primary: 'uid'
   })
 
-  ctx.command('跟随').action(async v => {
+  ctx.command('跟随', '让机器人跟随我！').action(async v => {
+    const uid = v.session.author.userId
+    if (config.permission.indexOf(uid) < 0) { return ' [IIROSE-Follow] 权限不足，请在控制台处将你的唯一标识添加到允许列表' }
+
     if (v.session.platform !== 'IIROSE_Bot') { return ' [IIROSE-Follow] 该平台不支持使用此插件' }
     const userData = await ctx.database.get('iirose_follow', v.session.author.userId)
 
@@ -51,7 +58,7 @@ export function apply(ctx: Context) {
     }
   })
 
-  ctx.command('取消跟随').action(async v => {
+  ctx.command('取消跟随', '停止机器人的跟随！').action(async v => {
     if (v.session.platform !== 'IIROSE_Bot') { return ' [IIROSE-Follow] 该平台不支持使用此插件' }
     const userData = await ctx.database.get('iirose_follow', v.session.author.userId)
 
