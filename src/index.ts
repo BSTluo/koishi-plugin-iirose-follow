@@ -33,10 +33,11 @@ export function apply(ctx: Context, config: Config) {
   })
 
   ctx.command('跟随', '让机器人跟随我！').action(async v => {
+    console.log(v.session.platform)
     const uid = v.session.author.userId
     if (config.permission.indexOf(uid) < 0) { return ' [IIROSE-Follow] 权限不足，请在控制台处将你的唯一标识添加到允许列表' }
 
-    if (v.session.platform !== 'IIROSE_Bot') { return ' [IIROSE-Follow] 该平台不支持使用此插件' }
+    if (v.session.platform !== 'iirose') { return ' [IIROSE-Follow] 该平台不支持使用此插件' }
     const userData = await ctx.database.get('iirose_follow', v.session.author.userId)
 
     if (userData.length > 0 && userData[0].status) {
@@ -59,7 +60,7 @@ export function apply(ctx: Context, config: Config) {
   })
 
   ctx.command('取消跟随', '停止机器人的跟随！').action(async v => {
-    if (v.session.platform !== 'IIROSE_Bot') { return ' [IIROSE-Follow] 该平台不支持使用此插件' }
+    if (v.session.platform !== 'iirose') { return ' [IIROSE-Follow] 该平台不支持使用此插件' }
     const userData = await ctx.database.get('iirose_follow', v.session.author.userId)
 
     if (userData.length > 0 && !userData[0].status) {
