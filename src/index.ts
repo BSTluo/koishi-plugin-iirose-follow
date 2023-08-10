@@ -5,7 +5,7 @@ export const name = 'iirose-follow'
 
 export interface Config {
   permission: string[]
- }
+}
 
 export const Config: Schema<Config> = Schema.object({
   permission: Schema.array(String).description('允许使用者唯一标识列表').default([])
@@ -85,17 +85,8 @@ export function apply(ctx: Context, config: Config) {
 
   ctx.on('iirose/switchRoom', async (session, data) => {
     const userData = await ctx.database.get('iirose_follow', data.uid)
-
-    if (userData.length <= 0 || !userData[0].status) {
-      return session.send({
-        private: {
-          message: ' [IIROSE-Follow] 你并没有将BOT设置为跟随状态',
-          userId: data.uid
-        }
-      })
-    }
-
-    const newRoomId = data.targetRoom
+    if (userData.length > 0 && !userData[0].status) { return }
+      const newRoomId = data.targetRoom
     if (session.guildId === newRoomId) {
       return session.send({
         private: {
