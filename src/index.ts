@@ -33,7 +33,6 @@ export function apply(ctx: Context, config: Config) {
   })
 
   ctx.command('跟随', '让机器人跟随我！').action(async v => {
-    console.log(v.session.platform)
     const uid = v.session.author.userId
     if (config.permission.indexOf(uid) < 0) { return ' [IIROSE-Follow] 权限不足，请在控制台处将你的唯一标识添加到允许列表' }
 
@@ -44,7 +43,6 @@ export function apply(ctx: Context, config: Config) {
       return ' [IIROSE-Follow] 你已经设置为跟随状态了哦~'
     } else if (userData.length > 0) {
       await ctx.database.set('iirose_follow', v.session.author.userId, {
-        uid: v.session.author.userId,
         status: true
       })
 
@@ -67,7 +65,6 @@ export function apply(ctx: Context, config: Config) {
       return ` [IIROSE-Follow]  [*${v.session.author.username}*] 你本就没有要求BOT跟随`
     } else if (userData.length > 0) {
       await ctx.database.set('iirose_follow', v.session.author.userId, {
-        uid: v.session.author.userId,
         status: false
       })
 
@@ -85,7 +82,9 @@ export function apply(ctx: Context, config: Config) {
 
   ctx.on('iirose/switchRoom', async (session, data) => {
     const userData = await ctx.database.get('iirose_follow', data.uid)
-    if (userData.length > 0 && !userData[0].status) { return }
+
+    if (userData.length <= 0 || !userData[0].status) { return }
+
       const newRoomId = data.targetRoom
     if (session.guildId === newRoomId) {
       return session.send({
