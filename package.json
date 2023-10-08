@@ -17,6 +17,6 @@
   ],
   "peerDependencies": {
     "koishi": "^4.13.8",
-    "koishi-plugin-adapter-iirose": "^0.2.22"
+    "koishi-plugin-adapter-iirose": "^0.2.31"
   }
 }
