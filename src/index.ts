@@ -68,14 +68,14 @@ export function apply(ctx: Context, config: Config) {
         status: false
       });
 
-      return ` [IIROSE-Follow] 将 [*${v.session.author.username}*] 设置为BOT跟随状态`;
+      return ` [IIROSE-Follow] 将 [*${v.session.author.username}*] 设置BOT取消跟随啦`;
     } else if (userData.length == 0) {
       ctx.database.create('iirose_follow', {
         uid: v.session.author.userId,
         status: false
       });
 
-      return ` [IIROSE-Follow] 将 [*${v.session.author.username}*] 设置为BOT跟随状态`;
+      return ` [IIROSE-Follow] 将 [*${v.session.author.username}*] 设置BOT取消跟随啦`;
     }
 
   });

@@ -1,7 +1,7 @@
 {
   "name": "koishi-plugin-iirose-follow",
   "description": "适用于的[IIROSE蔷薇花园](https://iirose.com/)的机器人跟随插件",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
@@ -17,6 +17,6 @@
   ],
   "peerDependencies": {
     "koishi": "^4.13.8",
-    "koishi-plugin-adapter-iirose": "~0.2.36"
+    "koishi-plugin-adapter-iirose": "~0.2.38"
   }
 }
